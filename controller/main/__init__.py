@@ -15,10 +15,14 @@ class Main:
                 mpk = MPK.load(io)
                 for i in mpk.files:
                     file = mpk.file(i)
-                    print('Unpacking: %s' % file['name'])
+                    if file['offset'] != 0:
+                        if file['name'] == '':
+                            file['name'] = 'unknown_%s' % i
 
-                    path_file = '%s_unpack/%s' % (arg, file['name'])
-                    dir_file, _ = os.path.split(path_file)
-                    os.makedirs(dir_file, exist_ok=True)
-                    with open(path_file, 'wb') as io_file:
-                        io_file.write(mpk.data(i))
+                        print('Unpacking: %s' % file['name'])
+
+                        path_file = '%s_unpack/%s' % (arg, file['name'])
+                        dir_file, _ = os.path.split(path_file)
+                        os.makedirs(dir_file, exist_ok=True)
+                        with open(path_file, 'wb') as io_file:
+                            io_file.write(mpk.data(i))
